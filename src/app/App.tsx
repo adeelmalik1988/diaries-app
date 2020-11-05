@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../rootReducer'
-
 import ButtonAppBar from '../features/home/Appbar'
 
 
@@ -41,6 +40,7 @@ const App: FC = () => {
           </Route>
         </Switch>
       </Router>
+      
     </div>
   );
 }

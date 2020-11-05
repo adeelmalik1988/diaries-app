@@ -43,7 +43,7 @@ export default function ButtonAppBar() {
           </Typography>{
               isLoggedIn ?
 
-                    <Button onClick={()=> dispatch(setAuthState(false))} color="inherit">Logout</Button>: ''
+                    <Button onClick={()=> dispatch(setAuthState(false))} color="inherit">Logout</Button>: null
           }
                 </Toolbar>
             </AppBar>

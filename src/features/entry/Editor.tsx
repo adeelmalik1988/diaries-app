@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../rootReducer'
-import Markdown from 'markdown-to-jsx'
+//import Markdown from 'markdown-to-jsx'
 import http from '../../services/api'
 import { Entry } from '../../interfaces/entry.interface';
 import { Diary } from '../../interfaces/diary.interface'
