@@ -16,7 +16,7 @@ const buttonStyle: React.CSSProperties = {
     margin: '0 0.5em'
 };
 
-const DiaryTile: FC<Props> = (props) => {
+const DiaryTileNew: FC<Props> = (props) => {
     const [diary, setDiary] = useState(props.diary);
     const [isEditing, setIsEditing] = useState(false);
     const dispatch = useAppDispatch()
@@ -92,4 +92,4 @@ const DiaryTile: FC<Props> = (props) => {
 
 }
 
-export default DiaryTile
+export default DiaryTileNew

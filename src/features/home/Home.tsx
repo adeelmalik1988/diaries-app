@@ -9,20 +9,21 @@ const Home: FC = () => {
 
     return (
         <div>
-
-            <div className='two-cols' >
-
-                <div className='left' >
-                    <Diaries />
-
+            <div className="two-cols">
+                <div className="left" >
+                
+                <Diaries />
                 </div>
-                <div className='right' >
-                    <Editor />
+                <div className="right"  >
+                <Editor />
                 </div>
-
-
 
             </div>
+
+
+
+
+
         </div>
     );
 };

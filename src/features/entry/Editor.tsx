@@ -10,6 +10,7 @@ import { updateDiary } from '../diary/diariesSlice'
 import { updateEntry } from './entriesSlice'
 import { showAlert } from '../../util'
 import { useAppDispatch } from '../../store'
+    
 
 const Editor: FC = () => {
     const { currentlyEditing: entry, canEdit, activeDiaryId } = useSelector(
@@ -57,108 +58,111 @@ const Editor: FC = () => {
     useEffect(() => {
         updateEditedEntry(entry)
     }, [entry])
-    
+
 
     return (
-        <div className='editor' >
-            <header
-                style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center',
-                    marginBottom: '0.2em',
-                    paddingBottom: '0.2em',
-                    borderBottom: '1px solid rba(0,0,0,0.1)',
-                }}>{
-                    entry && !canEdit ? (
-                        <h4>
-                            {entry.title}
-                            <a
-                                href='#edit'
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    if (entry != null) {
-                                        dispatch(setCanEdit(true))
+        
+            <div className='editor' >
+                <header
+                    style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                        marginBottom: '0.2em',
+                        paddingBottom: '0.2em',
+                        borderBottom: '1px solid rba(0,0,0,0.1)',
+                    }}>{
+                        entry && !canEdit ? (
+                            <h4>
+                                {entry.title}
+                                <a
+                                    href='#edit'
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (entry != null) {
+                                            dispatch(setCanEdit(true))
 
+                                        }
+                                    }}
+                                    style={
+                                        { marginLeft: '0.4em' }
                                     }
-                                }}
-                                style={
-                                    { marginLeft: '0.4em' }
-                                }
-                            >(Edit)</a>
-                        </h4>
-                    ) : (
-                            <input
-                                value={editedEntry?.title ?? ''}
-                                disabled={!canEdit}
-                                onChange={(e) => {
-                                    if (editedEntry) {
-                                        updateEditedEntry({
-                                            ...editedEntry,
-                                            title: e.target.value
-                                        })
-
-                                    } else {
-                                        updateEditedEntry(
-                                            {
-                                                title: e.target.value,
-                                                content: '',
-                                            }
-                                        )
-                                    }
-
-                                }}
-                            />
-                        )
-                }
-
-            </header>
-            {
-                entry && !canEdit ? (
-                    /*<Markdown >{entry.content} </Markdown>*/
-                <h4>{entry.content}</h4>
-                    
-
-                ) : (
-                        <>
-                            <textarea
-                                disabled={!canEdit}
-                                placeholder="Supports Markdown!"
-                                value={editedEntry?.content ?? ''}
-                                onChange={(e) => {
-                                    if (editedEntry) {
-                                        updateEditedEntry(
-                                            {
+                                >(Edit)</a>
+                            </h4>
+                        ) : (
+                                <input
+                                    value={editedEntry?.title ?? ''}
+                                    disabled={!canEdit}
+                                    autoFocus={true}
+                                    onChange={(e) => {
+                                        if (editedEntry) {
+                                            updateEditedEntry({
                                                 ...editedEntry,
-                                                content: e.target.value
-                                            }
-                                        )
-                                    } else {
-                                        updateEditedEntry(
-                                            {
-                                                title: '',
-                                                content: e.target.value
-                                            }
-                                        )
-                                    }
+                                                title: e.target.value
+                                            })
 
-                                }}
+                                        } else {
+                                            updateEditedEntry(
+                                                {
+                                                    title: e.target.value,
+                                                    content: '',
+                                                }
+                                            )
+                                        }
 
-                            />
-                            <button
-                                onClick={saveEntry}
-                                disabled={!canEdit}
-                            >
-                                Save
+                                    }}
+                                />
+                            )
+                    }
+
+                </header>
+                {
+                    entry && !canEdit ? (
+                        /*<Markdown >{entry.content} </Markdown>*/
+                        <h4>{entry.content}</h4>
+
+
+                    ) : (
+                            <>
+                                <textarea
+                                    disabled={!canEdit}
+                                    placeholder="Supports Markdown!"
+                                    value={editedEntry?.content ?? ''}
+                                    onChange={(e) => {
+                                        if (editedEntry) {
+                                            updateEditedEntry(
+                                                {
+                                                    ...editedEntry,
+                                                    content: e.target.value
+                                                }
+                                            )
+                                        } else {
+                                            updateEditedEntry(
+                                                {
+                                                    title: '',
+                                                    content: e.target.value
+                                                }
+                                            )
+                                        }
+
+                                    }}
+
+                                />
+                                <button
+                                    onClick={saveEntry}
+                                    disabled={!canEdit}
+                                >
+                                    Save
                     </button>
 
-                        </>
+                            </>
 
 
-                    )
-            }
+                        )
+                }
+            </div>
+        
 
-        </div>
     )
 
 

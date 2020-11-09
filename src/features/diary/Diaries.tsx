@@ -8,22 +8,23 @@ import Swal from 'sweetalert2'
 import { setUser } from '../auth/userSlice'
 import DiaryTile from './DiaryTiles'
 import { User } from '../../interfaces/user.interface'
-import { Route, Switch } from 'react-router-dom'
 import { useAppDispatch } from '../../store'
 import dayjs from 'dayjs'
-import DiaryEntriesList from './DiaryEntriesList'
+import DiaryTileNew from './DiaryTilesNew'
+import { Button } from '@material-ui/core'
 
-const Diaries: FC = ()=>{
+
+const Diaries: FC = () => {
     const dispatch = useAppDispatch()
-    const diaries = useSelector((state: RootState)=> state.diaries)
-    const user = useSelector((state: RootState)=> state.user )
+    const diaries = useSelector((state: RootState) => state.diaries)
+    const user = useSelector((state: RootState) => state.user)
 
-    useEffect(()=>{
-        const fetchDiaries = async () =>{
-            if (user){
-                http.get<null, Diary[]>(`diaries/${user.id}`).then((data)=>{
-                    if (data && data.length > 0){
-                        const sortedByUpdatedAt = data.sort((a,b)=>{
+    useEffect(() => {
+        const fetchDiaries = async () => {
+            if (user) {
+                http.get<null, Diary[]>(`diaries/${user.id}`).then((data) => {
+                    if (data && data.length > 0) {
+                        const sortedByUpdatedAt = data.sort((a, b) => {
                             return dayjs(b.updatedAt).unix() - dayjs(a.updatedAt).unix()
 
                         });
@@ -36,16 +37,16 @@ const Diaries: FC = ()=>{
             }
         }
         fetchDiaries();
-    },[dispatch, user]);
+    }, [dispatch, user]);
 
 
     const createDiary = async () => {
-        const result:any = await Swal.mixin(
+        const result: any = await Swal.mixin(
             {
                 input: 'text',
                 confirmButtonText: 'Next →',
                 showCancelButton: true,
-                progressSteps: ['1','2']
+                progressSteps: ['1', '2']
 
             }
         ).queue([
@@ -64,17 +65,17 @@ const Diaries: FC = ()=>{
                 inputValue: 'Private'
             }
         ]);
-        if (result.value){
-            const { value } =result
+        if (result.value) {
+            const { value } = result
             const {
                 diary,
                 user: _user,
-            } = await http.post<Partial<Diary>,{diary: Diary; user: User}>(`/diaries/`,{
+            } = await http.post<Partial<Diary>, { diary: Diary; user: User }>(`/diaries/`, {
                 title: value[0],
                 type: value[1],
                 userId: user?.id
             });
-            if( diary && user){
+            if (diary && user) {
                 dispatch(addDiary([diary] as Diary[]));
                 dispatch(addDiary([diary] as Diary[]));
                 dispatch(setUser(_user));
@@ -89,28 +90,23 @@ const Diaries: FC = ()=>{
         })
     }
 
-    return(
+    return (
         <div style={{ padding: '1em 0.4em' }} >
-            <Switch>
-                <Route path='/diary/:id' >
-                    <DiaryEntriesList />
+            <Button 
+            variant="contained" 
+            color="primary"
+            onClick={createDiary} >
+                Create New Diary
+                        </Button>
+            {
+                diaries.map((diary, idx) =>
+                   
+                    <DiaryTileNew key={idx} diary={diary} />
+                    
 
-                </Route>
-                <Route path='/' >
-                    <button onClick={createDiary} >
-                        Create New
-                        </button> 
-                        {
-                            diaries.map((diary, idx)=>
-                                <DiaryTile key={idx} diary={diary} />
-
-                            )
-                        }
-
-                </Route>
-
-
-            </Switch>
+                )
+            }
+           
 
         </div>
     )

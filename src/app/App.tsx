@@ -2,12 +2,15 @@ import React, { FC, lazy, Suspense } from 'react';
 import {
   BrowserRouter as
     Router,
-  Switch,
-  Route
+  Route,
+  Routes,
 } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '../rootReducer'
 import ButtonAppBar from '../features/home/Appbar'
+import DiaryEntriesList from '../features/diary/DiaryEntriesList';
+import DiaryEntriesListNew from '../features/diary/DiaryEntriesListNew';
+import { Link } from 'react-router-dom';
 
 
 const Auth = lazy(() => import('../features/auth/Auth'));
@@ -28,19 +31,30 @@ const App: FC = () => {
   return (
     <div>
 
-      <ButtonAppBar />
       <Router>
-        <Switch>
+        <nav>
+          <Link to='/' >{
+            <ButtonAppBar />
+          }
+          </Link>
+        </nav>
+        <Routes>
           <Route path='/' >
+
             <Suspense fallback={<p>Loading...</p>} >
               {isLoggedIn ? <Home /> : <Auth />}
 
             </Suspense>
 
           </Route>
-        </Switch>
+          <Route path='diary/:id' element={<DiaryEntriesListNew />} />
+
+
+        </Routes>
+
       </Router>
-      
+
+
     </div>
   );
 }
